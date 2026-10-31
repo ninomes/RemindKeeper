@@ -4,6 +4,10 @@
 
 基于 Electron，界面是原生 HTML/CSS/JS，无框架、无网络请求，数据全在本机。
 
+![platform](https://img.shields.io/badge/platform-Windows%2010%20%2F%2011-0078D6) ![version](https://img.shields.io/badge/version-1.0.0-blue) ![downloads](https://img.shields.io/github/downloads/ninomes/RemindKeeper/total)
+
+**[⬇ 下载安装包](https://github.com/ninomes/RemindKeeper/releases/latest)** — `RemindKeeper-Setup-1.0.0.exe`（75 MB，Windows 64 位）
+
 ## 界面预览
 
 | 主界面（深色） | 右下角提醒弹窗 |
@@ -70,16 +74,33 @@
 
 ## 运行方式
 
-**打包版**：双击桌面的「日程提醒」，或开始菜单里的快捷方式。
+**直接安装（推荐）**：到 [Releases](https://github.com/ninomes/RemindKeeper/releases/latest) 下载 `RemindKeeper-Setup-1.0.0.exe` 双击安装。
+
+> 安装包没有做代码签名，Windows 可能提示「未知发布者」，点「更多信息 → 仍要运行」即可。
 
 **源码运行**：
 
 ```bash
+git clone https://github.com/ninomes/RemindKeeper.git
+cd RemindKeeper
 npm install
 npm start
 ```
 
 或双击项目里的 `启动日程提醒.vbs`（不弹黑框）。
+
+**自己打包**：
+
+```bash
+npm run dist
+```
+
+产物在 `dist/`。国内网络建议先设镜像：
+
+```bash
+export ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/
+export ELECTRON_BUILDER_BINARIES_MIRROR=https://npmmirror.com/mirrors/electron-builder-binaries/
+```
 
 ## 开机自启
 
