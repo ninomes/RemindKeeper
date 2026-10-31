@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' data:">
+<title>日程提醒</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="titlebar">
+  <div class="brand">
+    <img class="brand-icon" src="../assets/icon.png" alt="">
+    <span class="brand-name">日程提醒</span>
+    <span class="brand-en">RemindKeeper</span>
+  </div>
+  <div class="tb-fill"></div>
+  <div class="winctl">
+    <button class="wc" id="wcMin" title="最小化">
+      <svg viewBox="0 0 12 12" width="12" height="12"><path d="M2.5 6h7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+    </button>
+    <button class="wc" id="wcMax" title="最大化">
+      <svg viewBox="0 0 12 12" width="12" height="12"><rect x="3" y="3" width="6" height="6" rx="1.2" fill="none" stroke="currentColor" stroke-width="1.1"/></svg>
+    </button>
+    <button class="wc close" id="wcClose" title="收进托盘">
+      <svg viewBox="0 0 12 12" width="12" height="12"><path d="M3.2 3.2l5.6 5.6M8.8 3.2l-5.6 5.6" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="shell">
+  <aside class="sidebar">
+    <nav class="nav" id="nav">
+      <button class="nav-item active" data-view="today">
+        <svg viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><rect x="3" y="4.5" width="14" height="12.5" rx="2.6"/><path d="M3 8.6h14M6.8 2.8v3M13.2 2.8v3" stroke-linecap="round"/></svg>
+        <span>今天</span><b class="cnt" id="cntToday">0</b>
+      </button>
+      <button class="nav-item" data-view="all">
+        <svg viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6.5 6h9M6.5 10h9M6.5 14h9"/><circle cx="3.6" cy="6" r=".9" fill="currentColor" stroke="none"/><circle cx="3.6" cy="10" r=".9" fill="currentColor" stroke="none"/><circle cx="3.6" cy="14" r=".9" fill="currentColor" stroke="none"/></svg>
+        <span>全部日程</span><b class="cnt" id="cntAll">0</b>
+      </button>
+      <button class="nav-item" data-view="done">
+        <svg viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7.2"/><path d="M6.9 10.2l2.1 2.1 4.1-4.4"/></svg>
+        <span>已完成</span><b class="cnt" id="cntDone">0</b>
+      </button>
+    </nav>
+
+    <div class="side-block">
+      <div class="side-title">快捷操作</div>
+      <button class="side-link" id="btnTestPopup">
+        <svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3a5 5 0 0 0-5 5v3l-1.2 2.4h12.4L15 11V8a5 5 0 0 0-5-5Z"/><path d="M8.3 16.2a1.9 1.9 0 0 0 3.4 0"/></svg>
+        <span>预览弹窗效果</span>
+      </button>
+    </div>
+
+    <div class="side-foot">
+      <button class="nav-item ghost" id="btnSettings">
+        <svg viewBox="0 0 20 20" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><circle cx="10" cy="10" r="2.6"/><path d="M10 2.6l1 2.1 2.3-.5 1 1.1-.6 2.2 1.8 1.5-.6 2.2-2.1.9.1 2.3-2 .9-1.6-1.6-2.2.6-1.1-1.9 1.5-1.6-.8-2.1 1.9-1.3-.5-2.1 2-.9Z" stroke-linejoin="round"/></svg>
+        <span>设置</span>
+      </button>
+      <p class="hint">关掉窗口不会退出<br>提醒会继续在托盘运行</p>
+    </div>
+  </aside>
+
+  <main class="pane">
+    <header class="pane-head">
+      <div class="ph-text">
+        <h1 id="pageTitle">今天</h1>
+        <p id="pageSub">--</p>
+      </div>
+      <div class="ph-actions">
+        <div class="clock" id="clock">00:00:00</div>
+        <button class="btn-new" id="btnNew">
+          <svg viewBox="0 0 20 20" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 4.4v11.2M4.4 10h11.2"/></svg>
+          新建日程
+        </button>
+      </div>
+    </header>
+
+    <section class="stats">
+      <div class="stat">
+        <span class="stat-k">今日日程</span>
+        <span class="stat-v" id="stTotal">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-k">进行中</span>
+        <span class="stat-v accent" id="stActive">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-k">已完成</span>
+        <span class="stat-v green" id="stDone">0</span>
+      </div>
+      <div class="stat wide">
+        <span class="stat-k">下一次提醒</span>
+        <span class="stat-v small" id="stNext">暂无</span>
+      </div>
+    </section>
+
+    <section class="list-wrap">
+      <div class="list" id="list"></div>
+      <div class="empty" id="empty" hidden>
+        <div class="empty-art">
+          <svg viewBox="0 0 96 96" width="88" height="88" fill="none">
+            <circle cx="48" cy="48" r="34" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 6" opacity=".35"/>
+            <circle cx="48" cy="48" r="22" stroke="currentColor" stroke-width="1.8" opacity=".55"/>
+            <path d="M48 34v14l9 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3 id="emptyTitle">今天还没有日程</h3>
+        <p id="emptyDesc">新建一个，到点它会从右下角弹出来提醒你</p>
+        <button class="btn-new ghost" id="btnNew2">新建日程</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- 新建 / 编辑抽屉 -->
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <header class="dr-head">
+    <h2 id="drTitle">新建日程</h2>
+    <button class="dr-x" id="drClose" title="关闭">
+      <svg viewBox="0 0 16 16" width="14" height="14"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </button>
+  </header>
+
+  <div class="dr-body">
+    <div class="field">
+      <label>要做什么</label>
+      <input class="input big" id="fTitle" maxlength="60" placeholder="例如：给张总打电话">
+    </div>
+
+    <div class="field">
+      <label>备注 <span class="opt">可选</span></label>
+      <input class="input" id="fNote" maxlength="120" placeholder="补充说明，会显示在弹窗里">
+    </div>
+
+    <div class="field">
+      <label>重复</label>
+      <div class="seg" id="segRepeat">
+        <button data-v="none">不重复</button>
+        <button data-v="daily" class="on">每天</button>
+        <button data-v="weekdays">工作日</button>
+        <button data-v="custom">自定义</button>
+      </div>
+      <div class="weekdays" id="weekdays" hidden>
+        <button data-d="1">一</button><button data-d="2">二</button><button data-d="3">三</button>
+        <button data-d="4">四</button><button data-d="5">五</button><button data-d="6">六</button>
+        <button data-d="0">日</button>
+      </div>
+    </div>
+
+    <div class="field two">
+      <div>
+        <label id="dateLabel">开始日期</label>
+        <input class="input" type="date" id="fDate">
+      </div>
+      <div id="endDateWrap" hidden>
+        <label>结束日期 <span class="opt">可选</span></label>
+        <input class="input" type="date" id="fEndDate">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>提醒时间段</label>
+      <div class="time-row">
+        <input class="input time" type="time" id="fStart" value="06:00">
+        <span class="dash">至</span>
+        <input class="input time" type="time" id="fEnd" value="10:00">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>每隔多久提醒一次</label>
+      <div class="chips" id="chipsInterval">
+        <button data-v="5">5 分钟</button>
+        <button data-v="10">10 分钟</button>
+        <button data-v="15">15 分钟</button>
+        <button data-v="20" class="on">20 分钟</button>
+        <button data-v="30">30 分钟</button>
+        <button data-v="60">1 小时</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>颜色</label>
+      <div class="colors" id="colors"></div>
+    </div>
+
+    <div class="preview" id="preview">
+      <span class="pv-dot"></span>
+      <span id="pvText">每天 06:00 - 10:00，共提醒 13 次</span>
+    </div>
+  </div>
+
+  <footer class="dr-foot">
+    <button class="btn-soft danger" id="fDelete" hidden>删除</button>
+    <div class="grow"></div>
+    <button class="btn-soft" id="fCancel">取消</button>
+    <button class="btn-solid" id="fSave">保存日程</button>
+  </footer>
+</aside>
+<div class="mask" id="mask"></div>
+
+<!-- 设置弹层 -->
+<div class="modal" id="settings" hidden>
+  <div class="modal-card">
+    <header class="md-head">
+      <h2>设置</h2>
+      <button class="dr-x" id="setClose">
+        <svg viewBox="0 0 16 16" width="14" height="14"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      </button>
+    </header>
+    <div class="md-body">
+      <div class="set-row">
+        <div><h4>外观</h4><p>深色更适合长时间挂着</p></div>
+        <div class="seg small" id="segTheme">
+          <button data-v="dark">深色</button>
+          <button data-v="light">浅色</button>
+        </div>
+      </div>
+      <div class="set-row">
+        <div><h4>开机自动启动</h4><p>开机后静默进入托盘，不弹主窗口</p></div>
+        <label class="switch"><input type="checkbox" id="setAutoLaunch"><span></span></label>
+      </div>
+      <div class="set-row">
+        <div><h4>提示音</h4><p>弹窗出现时播放一声轻提示</p></div>
+        <label class="switch"><input type="checkbox" id="setSound"><span></span></label>
+      </div>
+      <div class="set-row">
+        <div><h4>弹窗停留</h4><p>超时自动收起，下次到点还会再提醒</p></div>
+        <div class="seg small" id="segTimeout">
+          <button data-v="0">常驻</button>
+          <button data-v="20">20秒</button>
+          <button data-v="45">45秒</button>
+        </div>
+      </div>
+      <div class="set-row">
+        <div><h4>「稍后」间隔</h4><p>点稍后按钮后，多久再提醒</p></div>
+        <div class="seg small" id="segSnooze">
+          <button data-v="5">5分</button>
+          <button data-v="10">10分</button>
+          <button data-v="20">20分</button>
+        </div>
+      </div>
+      <div class="set-row">
+        <div><h4>默认时间区间</h4><p>新建日程时自动填入</p></div>
+        <div class="time-row mini">
+          <input class="input time" type="time" id="setStart">
+          <span class="dash">-</span>
+          <input class="input time" type="time" id="setEnd">
+        </div>
+      </div>
+      <div class="set-row">
+        <div><h4>数据</h4><p>日程保存在本机，不上传任何服务器</p></div>
+        <button class="btn-soft" id="setOpenData">打开数据目录</button>
+      </div>
+    </div>
+    <footer class="md-foot">
+      <button class="btn-soft" id="setTest">预览弹窗</button>
+      <div class="grow"></div>
+      <button class="btn-soft" id="setQuit">退出程序</button>
+      <button class="btn-solid" id="setDone">完成</button>
+    </footer>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

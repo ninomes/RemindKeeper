@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'">
+<title>提醒</title>
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="accent" id="accent"></div>
+    <div class="body">
+      <div class="meta">
+        <span class="dot" id="dot"></span>
+        <span id="metaText">06:00 · 第 1 / 13 次</span>
+        <span class="grow"></span>
+        <span class="badge" id="badge">进行中</span>
+      </div>
+      <div class="title" id="title">日程提醒</div>
+      <div class="sub" id="sub">06:00 - 10:00 · 每 20 分钟提醒</div>
+      <div class="actions">
+        <button class="btn primary" id="btnDone">已完成</button>
+        <button class="btn ghost" id="btnSnooze">稍后</button>
+        <button class="btn icon" id="btnOpen" title="打开日程">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 17 17 7M9 7h8v8"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>

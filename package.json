@@ -1,0 +1,56 @@
+{
+  "name": "remind-keeper",
+  "version": "1.0.0",
+  "private": true,
+  "description": "轻量日程提醒器 - 时间区间内循环提醒，手动完成才结束",
+  "main": "main.js",
+  "author": "RemindKeeper",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "icon": "node tools/gen-icon.js",
+    "shot": "electron tools/shot.js",
+    "dist": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.remindkeeper.app",
+    "productName": "RemindKeeper",
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "preload-popup.js",
+      "lib/**/*",
+      "renderer/**/*",
+      "assets/icon.png",
+      "assets/icon@2x.png",
+      "assets/tray.png",
+      "assets/tray@2x.png"
+    ],
+    "win": {
+      "icon": "assets/icon.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "日程提醒",
+      "artifactName": "日程提醒-安装程序-${version}.${ext}"
+    }
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^25.1.8"
+  }
+}

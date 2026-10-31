@@ -1,0 +1,211 @@
+/* 右下角提醒弹窗 */
+* { box-sizing: border-box; }
+
+:root {
+  --bg: #171a23;
+  --bg-soft: rgba(255, 255, 255, 0.045);
+  --bg-hover: rgba(255, 255, 255, 0.09);
+  --line: rgba(255, 255, 255, 0.085);
+  --text: #f4f6fb;
+  --muted: #98a1b8;
+  --shadow: 0 20px 46px -12px rgba(0, 0, 0, 0.72), 0 2px 8px rgba(0, 0, 0, 0.4);
+  --accent: #7c5cff;
+  --accent-2: #5b8cff;
+}
+
+html[data-theme='light'] {
+  --bg: #ffffff;
+  --bg-soft: rgba(15, 20, 35, 0.045);
+  --bg-hover: rgba(15, 20, 35, 0.08);
+  --line: rgba(15, 20, 35, 0.09);
+  --text: #12151f;
+  --muted: #6a7287;
+  --shadow: 0 20px 44px -14px rgba(20, 26, 45, 0.34), 0 2px 8px rgba(20, 26, 45, 0.1);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  font-family: 'Microsoft YaHei UI', 'Microsoft YaHei', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  cursor: default;
+}
+
+.card {
+  position: absolute;
+  inset: 14px;
+  display: flex;
+  border-radius: 16px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transform: translateY(calc(100% + 26px));
+  opacity: 0;
+  transition: transform .46s cubic-bezier(.16, 1, .3, 1), opacity .26s ease;
+  will-change: transform, opacity;
+}
+
+.card.enter {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.card.leave {
+  transform: translateY(calc(100% + 26px));
+  opacity: 0;
+  transition: transform .26s cubic-bezier(.4, 0, 1, 1), opacity .22s ease;
+}
+
+.accent {
+  width: 4px;
+  flex: 0 0 4px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+}
+
+.body {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 16px 13px;
+  display: flex;
+  flex-direction: column;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  color: var(--muted);
+  letter-spacing: .2px;
+  line-height: 16px;
+  flex: 0 0 auto;
+}
+
+.grow { flex: 1; }
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 rgba(124, 92, 255, .6);
+  animation: pulse 2s infinite;
+  flex: 0 0 auto;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(124, 92, 255, .55); }
+  70% { box-shadow: 0 0 0 7px rgba(124, 92, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(124, 92, 255, 0); }
+}
+
+.badge {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  letter-spacing: .3px;
+}
+
+.title {
+  font-size: 16.5px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 24px;
+  margin-top: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: .2px;
+  flex: 0 0 auto;
+}
+
+.sub {
+  font-size: 11.5px;
+  color: var(--muted);
+  line-height: 17px;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1 1 auto;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
+
+.btn {
+  height: 32px;
+  border-radius: 9px;
+  border: 1px solid transparent;
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform .12s ease, background .15s ease, opacity .15s ease, box-shadow .15s ease;
+  letter-spacing: .2px;
+}
+
+.btn:active { transform: scale(.97); }
+
+.btn.primary {
+  flex: 1 1 auto;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 5px 14px -6px var(--accent);
+}
+
+.btn.primary:hover { filter: brightness(1.09); }
+
+.btn.ghost {
+  flex: 0 0 auto;
+  padding: 0 14px;
+  color: var(--text);
+  background: var(--bg-soft);
+  border-color: var(--line);
+}
+
+.btn.ghost:hover { background: var(--bg-hover); }
+
+.btn.icon {
+  flex: 0 0 32px;
+  width: 32px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  background: var(--bg-soft);
+  border-color: var(--line);
+}
+
+.btn.icon:hover { color: var(--text); background: var(--bg-hover); }
+
+/* 进度条：本轮区间已经走了多少 */
+.progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.progress i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transition: width .6s ease;
+}
